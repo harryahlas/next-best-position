@@ -1,3 +1,78 @@
+# Query 4
+
+Please help me write an R script. I have 2 data sets, "employee_data" and "open_positions".
+
+Here is the employee_data data set:
+employee_id	available_date	work_skill	region
+1067	8/29/2024	A	1
+1134	7/2/2024	A	1
+1201	6/3/2024	B	1
+1268	10/5/2024	A	1
+1335	7/20/2024	B	2
+1402	8/29/2024	A	1
+1469	6/12/2024	A	2
+1536	6/11/2024	A	2
+1603	5/6/2024	A	2
+1670	9/21/2024	A	2
+1737	9/21/2024	A	2
+1804	7/10/2024	B	1
+1871	9/20/2024	A	2
+1938	8/22/2024	A	2
+2005	7/31/2024	A	2
+2072	6/6/2024	A	1
+2139	6/20/2024	A	1
+2206	6/30/2024	A	2
+2273	8/29/2024	B	2
+
+
+Here is the open_positions data set:
+position_ID	start_date	work_skill	region
+1016	11/23/2024	B	1
+1037	12/21/2024	A	1
+1033	8/25/2024	A	1
+1013	3/25/2025	A	1
+1032	1/2/2025	A	1
+1028	8/23/2024	B	1
+1065	4/1/2025	B	1
+1021	11/29/2024	B	1
+1020	10/24/2024	A	1
+1097	6/5/2024	B	1
+1076	3/12/2025	A	1
+1001	1/17/2025	A	1
+1042	11/15/2024	B	1
+1085	3/16/2025	B	1
+1060	1/2/2025	B	1
+1095	10/8/2024	B	1
+1067	5/19/2024	A	1
+1061	2/3/2025	A	1
+1011	3/5/2025	A	1
+
+
+I need to try to match/pair rows from employee_data to a row from open_positions as efficiently as possible. Sometimes I may not be able to find a match.  Each employee_data row can only be paired once and each open_positions row can only be matched once. 
+
+First, create the data sets above.
+
+Next, create a function called calculate_points that will be used later. It calculates "points", which is defined this way:
+		The days between the available_date and start_date count as one point. However, if the days between available_date and start_date are greater than 30, then add 500 points and do not calculate the difference in days.
+		If the work_skill is different, then add 500 points.
+		If the region is different, then add 250 points.
+		If the available_date is after the start_date then add 1000 points.
+
+Then calculate the score for each employee_id at each position_ID.  There should be about 361 different combinations.
+
+Next we will want to iterate through all possible combinations of the 18 employee_ids and position_IDs and add all the scores of the 18 employee_id/position_ID matches and figure out the lowest possbile score. There will be 18! different scores and we want to find the combination of matches that has the lowest score. Keep in mind that for every iteration, each employee_id can be used only once and each position_ID can be used only once.
+
+It might save computation to somehow keep track of the combination that is the lowest score as you go along, maybe in an object called best_combination. So, for example, on iteration 1, it will save the combination as best_combination because it is the first run. The 2nd iteration will compare its score to the best_combination from iteration 1 and if it is lower, then it will replace the iteration 1 combination with the iteration 2 combination. If the score is higher, it will leave the iteration 1 combination. And so on.
+
+Does this make sense? Is it something you can do?
+
+
+
+
+
+
+
+
 # Query 3
 
 Please help me write an R script. I have 2 data sets, "employee_data" and "open_positions".
