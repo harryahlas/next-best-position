@@ -20,15 +20,18 @@ position_ID	start_date	work_skill	region
 1032	1/2/2025	A	2
 
 Here is what I am trying to do:
-I need to pair one row from employee_data to a row from open_positions.  Each row can only be matched once. The available_date must be before the start_date.
-For each row pairing, calculate a points score.
-For each row pairing, please calculate total points, which is defined this way:
-	The days between the available_date and start_date count as one point. However, if the days between available_date and start_date are greater than 30, then add 500 points.
-	If the work_skill is different, then add 500 points.
-	If the region is different, then add 250 points.
-For each row that is not matched, add 1000 points to the total.
+I need to match/pair every row from employee_data to a row from open_positions.  Each employee_data row can only be paired once and each open_positions row can only be matched once. For each match, the available_date must be before the start_date.
 
-
+Given above, loop through all potential sets of matches. For each loop, do the following:
+	For each row pairing, calculate "points", which is defined this way:
+		The days between the available_date and start_date count as one point. However, if the days between available_date and start_date are greater than 30, then add 500 points and do not calculate the difference in days.
+		If the work_skill is different, then add 500 points.
+		If the region is different, then add 250 points.
+	Total the points from all the row pairings.
+	For each row that is not able to be matched, add 1000 points to the total.
+	If the loop is the first loop then save the total points score of the loop in a variable called lowest_total_points. 
+	If it is not the first loop, check to see if this loop's total points is less than lowest_total_points value. If this loop's total points is less than lowest_total_points then save the employee_id/position_ID matches from this loop into a data frame. And assign the current lowest points value to lowest_total_points.
+After all the cycles are over, the saved data frame should be the one with the lowest total points. Does this make sense? Is it something you can do?
 
 
 
