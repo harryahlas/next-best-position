@@ -1,0 +1,14 @@
+# test query - not correct approach
+Please help me write an R script. I have 2 data sets:
+
+Employee data set sample rows:
+employee_id	available_date	points
+21	5/7/2024	0
+1	8/29/2024	999
+76	8/29/2024	499
+
+Open position data set sample rows:
+position_ID	start_date
+1	8/4/2024
+2	1/6/2025
+3	3/17/2025
