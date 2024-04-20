@@ -1,7 +1,40 @@
+# Query 2
+
+Please help me write an R script. I have 2 data sets, "employee_data" and "open_positions".
+
+Here is a sample of 6 rows from employee_data, which actually has 100 rows in the full data set:
+employee_id	available_date	work_skill	region
+1067	8/29/2024	A	1
+1134	7/2/2024	A	1
+1201	6/3/2024	B	1
+1268	10/5/2024	A	1
+1335	7/20/2024	B	2
+1402	8/29/2024	A	1
+
+Here is a sample of 6 rows from open_positions, which actually has 100 rows in the full data set:
+position_ID	start_date	work_skill	region
+1016	11/23/2024	B	1
+1037	12/21/2024	A	1
+1033	8/25/2024	A	1
+1013	3/25/2025	A	1
+1032	1/2/2025	A	2
+
+Here is what I am trying to do:
+I need to pair one row from employee_data to a row from open_positions.  Each row can only be matched once. The available_date must be before the start_date.
+For each row pairing, calculate a points score.
+For each row pairing, please calculate total points, which is defined this way:
+	The days between the available_date and start_date count as one point. However, if the days between available_date and start_date are greater than 30, then add 500 points.
+	If the work_skill is different, then add 500 points.
+	If the region is different, then add 250 points.
+For each row that is not matched, add 1000 points to the total.
+
+
+
+
+
 # test query - not correct approach
 Please help me write an R script. I have 2 data sets:
 
-Employee data set sample rows:
 employee_id	available_date	points
 21	5/7/2024	0
 1	8/29/2024	999
@@ -12,3 +45,5 @@ position_ID	start_date
 1	8/4/2024
 2	1/6/2025
 3	3/17/2025
+
+
