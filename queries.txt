@@ -1,3 +1,36 @@
+# Realy query 4, assuming we already have matched scores
+
+Please help me write an R script. I have a data set below:
+
+
+employee_id	position_id	points
+1067	1016	100
+1134	1016	500
+1201	1016	500
+1268	1016	500
+1067	1037	1000
+1134	1037	100
+1201	1037	250
+1268	1037	750
+1067	1033	1000
+1134	1033	250
+1201	1033	0
+1268	1033	0
+1067	1013	100
+1134	1013	250
+1201	1013	400
+1268	1013	100
+
+There are three columns:
+employee_id - this is the id number of each employee_data
+position_id - this is the id number of each position that needs an opening
+points - this is the number of points that it costs to have the employee_id in this position_ID
+
+There are 4 employee_idss and 4 position_ids. We need to align each employee_id to a single position_id and each position_ids can be assigned to only one employee_id.  That means there are 4! different possible combinations of employee_id/position_id matches. 
+
+Can you write an algorithm that will cycle through all 4! different combinations and identify the combination with the lowest score?
+
+
 # Query 4
 
 Please help me write an R script. I have 2 data sets, "employee_data" and "open_positions".
