@@ -2,6 +2,110 @@
 if (!require(lpSolve)) install.packages("lpSolve", dependencies=TRUE)
 library(lpSolve)
 
+
+# Load necessary library
+library(lubridate)
+
+# Define employee data
+employee_data <- read.table(text = "
+employee_id available_date work_skill region
+1067 8/29/2024 A 1
+1134 7/2/2024 A 1
+1201 6/3/2024 B 1
+1268 10/5/2024 A 1
+1335 7/20/2024 B 2
+1402 8/29/2024 A 1
+1469 6/12/2024 A 2
+1536 6/11/2024 A 2
+1603 5/6/2024 A 2
+1670 9/21/2024 A 2
+1737 9/21/2024 A 2
+1804 7/10/2024 B 1
+1871 9/20/2024 A 2
+1938 8/22/2024 A 2
+2005 7/31/2024 A 2
+2072 6/6/2024 A 1
+2139 6/20/2024 A 1
+2206 6/30/2024 A 2
+2273 8/29/2024 B 2
+", header = TRUE, stringsAsFactors = FALSE)
+
+# Define open positions data
+open_positions <- read.table(text = "
+position_ID start_date work_skill region
+1016 11/23/2024 B 1
+1037 12/21/2024 A 1
+1033 8/25/2024 A 1
+1013 3/25/2025 A 1
+1032 1/2/2025 A 1
+1028 8/23/2024 B 1
+1065 4/1/2025 B 1
+1021 11/29/2024 B 1
+1020 10/24/2024 A 1
+1097 6/5/2024 B 1
+1076 3/12/2025 A 1
+1001 1/17/2025 A 1
+1042 11/15/2024 B 1
+1085 3/16/2025 B 1
+1060 1/2/2025 B 1
+1095 10/8/2024 B 1
+1067 5/19/2024 A 1
+1061 2/3/2025 A 1
+1011 3/5/2025 A 1
+", header = TRUE, stringsAsFactors = FALSE)
+
+# Function to calculate points
+calculate_points <- function(employee, position) {
+  # Convert dates
+  available_date <- mdy(employee$available_date)
+  start_date <- mdy(position$start_date)
+  
+  # Calculate day difference
+  day_diff <- as.integer(difftime(start_date, available_date, units = "days"))
+  
+  # Initialize points
+  points <- 0
+  
+  # Calculate points based on conditions
+  if (day_diff > 30) {
+    points <- points + 500
+  } else {
+    points <- points + abs(day_diff)
+  }
+  
+  if (employee$work_skill != position$work_skill) {
+    points <- points + 500
+  }
+  
+  if (employee$region != position$region) {
+    points <- points + 250
+  }
+  
+  if (available_date > start_date) {
+    points <- points + 1000
+  }
+  
+  return(points)
+}
+
+# Compute the matrix of points
+score_matrix <- matrix(nrow = nrow(employee_data), ncol = nrow(open_positions))
+
+# Fill the matrix with points
+for (i in 1:nrow(employee_data)) {
+  for (j in 1:nrow(open_positions)) {
+    score_matrix[i, j] <- calculate_points(employee_data[i,], open_positions[j,])
+  }
+}
+
+# Assign row and column names for clarity
+rownames(score_matrix) <- employee_data$employee_id
+colnames(score_matrix) <- open_positions$position_ID
+
+# Print the matrix
+print(score_matrix)
+
+
 # Example data: matrix of productivity scores
 # Rows: People, Columns: Jobs
 productivity_matrix <- matrix(c(
