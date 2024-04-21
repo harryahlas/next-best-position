@@ -1,7 +1,7 @@
 # Install and load the lpSolve package
 if (!require(lpSolve)) install.packages("lpSolve", dependencies=TRUE)
 library(lpSolve)
-
+library(readxl)
 
 # Load necessary library
 library(lubridate)
@@ -30,6 +30,9 @@ employee_id available_date work_skill region
 2273 8/29/2024 B 2
 ", header = TRUE, stringsAsFactors = FALSE)
 
+employee_data <- read_excel("assignment_data_5.xlsx", sheet = "employees")
+
+
 # Define open positions data
 open_positions <- read.table(text = "
 position_ID start_date work_skill region
@@ -54,11 +57,15 @@ position_ID start_date work_skill region
 1011 3/5/2025 A 1
 ", header = TRUE, stringsAsFactors = FALSE)
 
+open_positions <- read_excel("assignment_data_5.xlsx", sheet = "open positions")
+
+# mdy(as.character(as.Date(employee_data$available_date[1])))
+# mdy(format(employee_data$available_date[1], "%m/%d/%Y"))
 # Function to calculate points
 calculate_points <- function(employee, position) {
   # Convert dates
-  available_date <- mdy(employee$available_date)
-  start_date <- mdy(position$start_date)
+  available_date <- mdy(format(employee$available_date, "%m/%d/%Y"))
+  start_date <- mdy(format(position$start_date, "%m/%d/%Y"))
   
   # Calculate day difference
   day_diff <- as.integer(difftime(start_date, available_date, units = "days"))
