@@ -1,3 +1,7 @@
+# query 5
+Let's say you have 50 people and 50 empty jobs and you need to assign all 50 people to 1 job, so that each person has a job and no jobs are left untaken. You know how productive each person will be at each job and each person will have a different amount of productivity for each job. You need to put people in the job that will result in the most productivity all together for everyone.  What kind of problem is this called? And can you solve something like that in R?
+
+
 # Realy query 4, assuming we already have matched scores
 
 Please help me write an R script. I have a data set below:
