@@ -5,6 +5,7 @@ library(readxl)
 
 # Load necessary library
 library(lubridate)
+library(tidyverse)
 
 # Define employee data
 employee_data <- read.table(text = "
@@ -111,7 +112,7 @@ colnames(score_matrix) <- open_positions$position_ID
 
 # Print the matrix
 print(score_matrix)
-
+write.csv(score_matrix, "score_matrix.csv")
 
 # Example data: matrix of productivity scores
 # Rows: People, Columns: Jobs
@@ -145,7 +146,24 @@ print(score_matrix)
 lp_model <- lp.assign(score_matrix, "min")
 
 # Solution: Assigned jobs for each person
-lp_model$solution
+solution <- lp_model$solution
+rownames(solution) <- employee_data$employee_id
+colnames(solution) <- open_positions$position_ID
+solution %>% 
+  data.frame() %>% 
+  rownames_to_column("employee_id") %>% 
+  pivot_longer(cols = -employee_id, names_to = "position_id") %>% 
+  mutate(position_id = str_replace(position_id, "X", "")) %>% 
+  mutate(employee_id = as.numeric(employee_id),
+         position_ID = as.numeric(position_id)) %>% 
+  filter(value == 1) %>% 
+  left_join(employee_data) %>% 
+  rename(work_skill_employee = work_skill,
+         region_employee = region) %>% 
+  left_join(open_positions) %>% 
+  rename(work_skill_position = work_skill,
+         region_position = region) %>% 
+  write.csv("solution.csv")
 
 # Print results
 cat("The optimal assignment matrix is:\n")
