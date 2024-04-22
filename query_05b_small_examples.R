@@ -36,7 +36,7 @@ employee_data <- read_excel("assignment_data_5b.xlsx", sheet = "employees")
 
 # Define open positions data
 open_positions <- read.table(text = "
-position_ID start_date work_skill region
+position_id start_date work_skill region
 1016 11/23/2024 B 1
 1037 12/21/2024 A 1
 1033 8/25/2024 A 1
@@ -108,7 +108,17 @@ for (i in 1:nrow(employee_data)) {
 
 # Assign row and column names for clarity
 rownames(score_matrix) <- employee_data$employee_id
-colnames(score_matrix) <- open_positions$position_ID
+colnames(score_matrix) <- open_positions$position_id
+
+# Create a long version of the score matrix
+score_matrix_long <- score_matrix %>% 
+  data.frame() %>% 
+  rownames_to_column("employee_id") %>% 
+  pivot_longer(cols = -employee_id, names_to = "position_id", values_to = "score") %>% 
+  mutate(position_id = str_replace(position_id, "X", "")) %>% 
+  mutate(employee_id = as.numeric(employee_id),
+         position_id = as.numeric(position_id))
+
 
 # Print the matrix
 print(score_matrix)
@@ -148,21 +158,22 @@ lp_model <- lp.assign(score_matrix, "min")
 # Solution: Assigned jobs for each person
 solution <- lp_model$solution
 rownames(solution) <- employee_data$employee_id
-colnames(solution) <- open_positions$position_ID
+colnames(solution) <- open_positions$position_id
 solution %>% 
   data.frame() %>% 
   rownames_to_column("employee_id") %>% 
   pivot_longer(cols = -employee_id, names_to = "position_id") %>% 
   mutate(position_id = str_replace(position_id, "X", "")) %>% 
   mutate(employee_id = as.numeric(employee_id),
-         position_ID = as.numeric(position_id)) %>% 
-  filter(value == 1) %>% 
+         position_id = as.numeric(position_id)) %>% 
+  filter(round(value) == 1) %>% # for some reason some of the 1s are not always exactly equal to 1
   left_join(employee_data) %>% 
   rename(work_skill_employee = work_skill,
          region_employee = region) %>% 
   left_join(open_positions) %>% 
   rename(work_skill_position = work_skill,
          region_position = region) %>% 
+  left_join(score_matrix_long) %>% View()
   write.csv("solution5b.csv")
 
 # Print results
